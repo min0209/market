@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market</title>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/animated-headline.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/themify-icons.css}">
+    <link rel="stylesheet" th:href="@{/css/fontawesome-all.min.css}">
+
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/favicon.ico}">
+
+</head>
+<body class="full-wrapper">
+<header>
+    <!-- Header Start -->
+    <div class="header-area ">
+        <div class="main-header header-sticky sticky-bar">
+            <div class="container-fluid">
+                <div class="menu-wrapper d-flex align-items-center justify-content-between">
+                    <div class="header-left d-flex align-items-center">
+                        <!-- Logo -->
+                        <div class="logo">
+                            <a href="/"><img th:src="@{/img/logo/logo.png}" alt="" style="width: 100px; margin-left:30px;"></a>
+                        </div>
+                    </div>
+                    <div class="header-right1 d-flex align-items-center">
+                        <div class="main-menu">
+                            <nav>
+                                <ul id="navigation">
+                                    <li><a>User</a>
+                                        <ul th:if="${username}" class="submenu">
+                                            <li><a href="/user/myInfo">user info</a></li>
+                                            <li><a href="/user/logout">logout</a></li>
+                                        </ul>
+                                        <ul th:unless="${username}" class="submenu">
+                                            <li><a href="/user/login">login</a></li>
+                                            <li><a href="/user/signUp">sign up</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <!-- Mobile Menu -->
+                <div class="col-12">
+                    <div class="mobile_menu d-block d-lg-none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- Header End -->
+</header>
+    <div class="top-el-padding">
+        <div class="blog_right_sidebar">
+            <aside class="single_sidebar_widget search_widget">
+                <form action="/product/search">
+                    <div class="form-group">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder='Search Keyword'
+                                   name="query"
+                                   onfocus="this.placeholder = ''"
+                                   onblur="this.placeholder = 'Search Keyword'">
+                            <div class="input-group-append">
+                                <button class="btns" type="button"><i class="ti-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                            type="submit">Search</button>
+                </form>
+            </aside>
+        </div>
+    </div>
+    <div class="new-arrival">
+        <div class="container">
+            <!-- Section tittle -->
+            <div class="row justify-content-center">
+                <div class="col-xl-7 col-lg-8 col-md-10">
+                    <div class="section-tittle mb-60 text-center wow fadeInUp" data-wow-duration="2s" data-wow-delay=".2s">
+                        <h2>new product</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6" th:each="product:${products}">
+                    <div class="single-new-arrival mb-50 text-center wow fadeInUp" data-wow-duration="1s" data-wow-delay=".1s">
+                        <div class="popular-img" th:if="${product.getImageList.isEmpty}">
+                            <img th:src="@{/img/product/default.png}" alt="">
+                        </div>
+                        <div class="popular-img" th:unless="${product.getImageList.isEmpty}">
+                            <img th:src="${product.getImageList.get(0).getPath}" alt="">
+                        </div>
+                        <div class="popular-caption">
+                            <h3 ><a th:href="@{'/product/'+${product.getPid}}" th:text="${product.getTitle}"></a></h3>
+                            <p th:text="${product.getUserArea}"></p>
+                            <span th:text="${product.getPrice}"></span>
+                            <ul class="blog-info-link blog-info-center">
+                                <li class="del-hover"><i class="far fa-heart"th:onclick ="|bookmark(${product.getPid})|"
+                                    th:text=" ${product.getBookmarkCount}" th:id="|heart_${product.getPid}|"></i></li>
+                                <li><a href="#"><i class="fa fa-comments"></i>00000</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="room-btn">
+                    <a href="/product" class="border-btn">Browse More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS here -->
+    <!-- Jquery, Popper, Bootstrap -->
+    <script th:src="@{/js/vendor/jquery-1.12.4.min.js}"></script>
+
+    <!-- Slick-slider , Owl-Carousel ,slick-nav -->
+    <script th:src="@{/js/owl.carousel.min.js}"></script>
+    <script th:src="@{/js/slick.min.js}"></script>
+
+    <!-- Nice-select, sticky,Progress -->
+    <script th:src="@{/js/jquery.nice-select.min.js}"></script>
+    <script th:src="@{/js/bookmark.js}"></script>
+    <script th:inline="javascript">
+            setBookmark([[${products}]])
+    </script>
+
+
+</body>
+</html>

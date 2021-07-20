@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market</title>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/animated-headline.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/themify-icons.css}">
+    <link rel="stylesheet" th:href="@{/css/fontawesome-all.min.css}">
+
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/favicon.ico}">
+
+</head>
+<body class="full-wrapper">
+<header>
+    <!-- Header Start -->
+    <div class="header-area ">
+        <div class="main-header header-sticky sticky-bar">
+            <div class="container-fluid">
+                <div class="menu-wrapper d-flex align-items-center justify-content-between">
+                    <div class="header-left d-flex align-items-center">
+                        <!-- Logo -->
+                        <div class="logo">
+                            <a href="/"><img th:src="@{/img/logo/logo.png}" alt="" style="width: 100px; margin-left:30px;"></a>
+                        </div>
+                    </div>
+                    <div class="header-right1 d-flex align-items-center">
+                        <div class="main-menu">
+                            <nav>
+                                <ul id="navigation">
+                                    <li><a>User</a>
+                                        <ul th:if="${username}" class="submenu">
+                                            <li><a href="/user/myInfo">user info</a></li>
+                                            <li><a href="/user/logout">logout</a></li>
+                                        </ul>
+                                        <ul th:unless="${username}" class="submenu">
+                                            <li><a href="/user/login">login</a></li>
+                                            <li><a href="/user/signUp">sign up</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <!-- Mobile Menu -->
+                <div class="col-12">
+                    <div class="mobile_menu d-block d-lg-none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- Header End -->
+</header>
+    <div class="top-el-padding">
+        <div class="blog_right_sidebar">
+    <aside class="single_sidebar_widget search_widget">
+        <form action="/product/search">
+            <div class="form-group">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="query" placeholder='Search Keyword'
+                           onfocus="this.placeholder = ''"
+                           onblur="this.placeholder = 'Search Keyword'">
+                    <div class="input-group-append">
+                        <button class="button" type="submit"><i class="ti-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                    type="submit">Search</button>
+        </form>
+    </aside>
+</div>
+</div>
+
+    <div class="section-tittle mb-60 text-center wow fadeInUp">
+        <h2 style="padding: 50px;">Update Product</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <form class="form-contact contact_form" th:action="'/product/'+${pid}+'/update'" method="POST" id="contactForm" novalidate="novalidate" enctype="multipart/form-data">
+
+                <div class="slideshow-container" id="slideshow-container">
+                    <div th:each="img:${product.getImageList}" class="mySlides">
+                        <img th:src="@{${img.getPath}}" class="product_upload_image">
+                    </div>
+                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                </div>
+                <br>
+                <div id="prev_image_dot" style="text-align:center;">
+                </div>
+                <button type="button" class="button button-contactForm small-btn" th:onclick="|delImage(${pid})|">delete</button>
+
+                <input style="display: block; margin:auto; padding:30px;" type="file" id="input-multiple-image" name="imageList"  multiple>
+
+                <br>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <input class="form-control valid" name="title" th:value="${product.getTitle}" id="title" type="title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter title'" placeholder="Title">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <textarea class="form-control w-100" name="content" th:text="${product.getContent}" id="content" cols="30" rows="9" onfocus="this.placeholder = 'Content'" onblur="this.placeholder = 'Enter Content'" placeholder=" "></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <input class="form-control" name="price" th:value="${product.getPrice}" id="price" type="text"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Price'" placeholder="Price">
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-4 ">
+                        <!-- Job Category Listing start -->
+                        <div class="category-listing mb-50">
+                            <!-- single one -->
+                            <div class="single-listing">
+                                <div class="form-group">
+                                    
+                                <div class="select-job-items2">
+                                    <select name="productStatus">
+                                        <option th:if="${product.getProductStatus == 'sale'}" value="sale" selected >판매중</option>
+                                        <option th:unless="${product.getProductStatus == 'sale'}" value="sale" >판매중</option>
+                                        <option th:if="${product.getProductStatus == 'reserved'}" value="reserved" selected>예약됨</option>
+                                        <option th:unless="${product.getProductStatus == 'reserved'}" value="reserved">예약됨</option>
+                                        <option th:if="${product.getProductStatus == 'soldOut'}" value="soldOut" selected>판매완료</option>
+                                        <option th:unless="${product.getProductStatus == 'soldOut'}" value="soldOut">판매완료</option>
+                                    </select>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mt-3" style="margin-bottom:100px;">
+                    <button type="submit" class="button button-contactForm boxed-btn" style="position:absolute;margin-left:200px;">update</button>
+                    <button type="button" class="button button-contactForm boxed-btn" style="position:absolute;margin-left:400px;" th:onclick="|deleteProduct(${pid})|">delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JS here -->
+    <!-- Jquery, Popper, Bootstrap -->
+    <script th:src="@{/js/vendor/jquery-1.12.4.min.js}"></script>
+
+    <!-- Slick-slider , Owl-Carousel ,slick-nav -->
+    <script th:src="@{/js/owl.carousel.min.js}"></script>
+    <script th:src="@{/js/slick.min.js}"></script>
+
+    <!-- Nice-select, sticky,Progress -->
+    <script th:src="@{/js/jquery.nice-select.min.js}"></script>
+     <script th:src="@{/js/slide.js}"></script>
+
+
+</body>
+</html>

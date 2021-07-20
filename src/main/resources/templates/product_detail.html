@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market</title>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/animated-headline.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/themify-icons.css}">
+    <link rel="stylesheet" th:href="@{/css/fontawesome-all.min.css}">
+
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/favicon.ico}">
+
+</head>
+<body class="full-wrapper">
+    <header>
+        <!-- Header Start -->
+        <div class="header-area ">
+            <div class="main-header header-sticky sticky-bar">
+                <div class="container-fluid">
+                    <div class="menu-wrapper d-flex align-items-center justify-content-between">
+                        <div class="header-left d-flex align-items-center">
+                            <!-- Logo -->
+                            <div class="logo">
+                                <a href="/"><img th:src="@{/img/logo/logo.png}" alt="" style="width: 100px; margin-left:30px;"></a>
+                            </div>
+                        </div>
+                        <div class="header-right1 d-flex align-items-center">
+                            <div class="main-menu">
+                                <nav>
+                                    <ul id="navigation">
+                                        <li><a>User</a>
+                                            <ul th:if="${username}" class="submenu">
+                                                <li><a href="/user/myInfo">user info</a></li>
+                                                <li><a href="/user/logout">logout</a></li>
+                                            </ul>
+                                            <ul th:unless="${username}" class="submenu">
+                                                <li><a href="/user/login">login</a></li>
+                                                <li><a href="/user/signUp">sign up</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Mobile Menu -->
+                    <div class="col-12">
+                        <div class="mobile_menu d-block d-lg-none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <!-- Header End -->
+    </header>
+    <div class="top-el-padding">
+        <div class="blog_right_sidebar">
+            <aside class="single_sidebar_widget search_widget">
+                <form action="#">
+                    <div class="form-group">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder='Search Keyword'
+                            onfocus="this.placeholder = ''"
+                            onblur="this.placeholder = 'Search Keyword'">
+                            <div class="input-group-append">
+                                <button class="btns" type="button"><i class="ti-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                    type="submit">Search</button>
+                </form>
+            </aside>
+        </div>
+    </div>
+    <div>
+        <section class="single-post-area section-padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 posts-list">
+                        <div class="single-post">
+                            <div class="feature-img">
+                                <div class="slideshow-container" id="slideshow-container">
+                                    <div th:each="img:${product.getImageList}" class="mySlides">
+                                        <img th:if="${img.getPath}" th:src="@{${img.getPath}}" class="product_upload_image">
+                                        <img th:unless="${img.getPath}" th:src="@{/img/product/default.png}" class="product_upload_image">
+                                    </div>
+                                    <img th:if="${product.getImageList.size == 0}" th:src="@{/img/product/default.png}" class="product_upload_image">
+                                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                                </div>
+                                <br>
+                                <div id="prev_image_dot" style="text-align:center;"></div>
+                            </div>
+                            <div class="blog_details">
+                                <h2 style="color: #2d2d2d;" th:text="${product.getTitle}"></h2>
+                                <ul class="blog-info-link mt-3 mb-4">
+                                    <li class="del-hover"><i class="far fa-heart"th:onclick ="|bookmark(${product.getPid})|"
+                                        th:text=" ${product.getBookmarkCount}" th:id="|heart_${product.getPid}|"></i></li>
+                                    <li><a href="#"><i class="fa fa-comments"></i>00</a></li>
+                                </ul>
+                                <p class="excert" th:text="${product.getProductStatus}"></p>
+                                <p class="excert" th:text="${product.getContent}"></p>
+                            </div>
+                        </div>
+                        <button type="button" th:if="${username} == ${author.getNickname}" class="button button-contactForm small-btn detail-btn" th:onclick="location.href='/product/'+[[${product.getPid}]]+'/update'">update</button>
+                        <button type="button" th:if="${username} == ${author.getNickname}" class="button button-contactForm small-btn detail-btn" th:onclick="|reUp(${product.getPid})|">re up</button>
+                        <div class="blog-author" style="clear:both;">
+                            <div class="media align-items-center">
+                                <a th:href="'/user/'+${author.username}"><img th:src="@{/img/logo/user.png}"></a>
+                                 <div class="media-body">
+                                    <a href="#">
+                                        <h4 th:text="${author.getNickname}"></h4>
+                                    </a>
+                                    <p th:text="${author.getArea}"></p>
+                               </div>
+                            </div>
+                       </div>
+                    </div>
+                </div>
+           </div>
+        </section>
+    </div>
+    <script th:src="@{/js/vendor/jquery-1.12.4.min.js}"></script>
+
+    <!-- Slick-slider , Owl-Carousel ,slick-nav -->
+    <script th:src="@{/js/owl.carousel.min.js}"></script>
+    <script th:src="@{/js/slick.min.js}"></script>
+
+    <!-- Nice-select, sticky,Progress -->
+    <script th:src="@{/js/jquery.nice-select.min.js}"></script>
+    <!-- Jquery Plugins, main Jquery -->
+    <script th:src="@{/js/slide.js}"></script>
+    <script th:src="@{/js/bookmark.js}"></script>
+    <script th:inline="javascript">
+        setBookmarkOne([[${product}]])
+    </script>
+
+
+    </body>
+</html>

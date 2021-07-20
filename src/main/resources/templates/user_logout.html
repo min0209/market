@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<body xmlns:th="http://www.w3.org/1999/xhtml">
+    <div th:if="${error_message}">
+        <script th:inline="javascript">
+            var message = [[${error_message}]];
+            alert(message);
+            history.back();
+        </script>
+    </div>
+    <div th:unless="${error_message}">
+        <meta http-equiv="refresh" content="0; url=/">
+    </div>
+</body>
+</html>
